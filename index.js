@@ -85,7 +85,7 @@ async function update() {
 function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteContent = false, numberOfPost = 20) {
   var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
-    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]} 게시판`).join(', ')}`,
+    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]}`).join(', ')}`,
     id: 'https://portal.koreatech.ac.kr/',
     link: 'https://portal.koreatech.ac.kr/',
     language: 'ko',
