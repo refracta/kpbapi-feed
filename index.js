@@ -64,7 +64,7 @@ async function updatePostList() {
     });
 
     var oldPostList = Object.keys(targetDB.value()).sort();
-    oldPostList = oldPostList.slice(postList.length);
+    oldPostList = oldPostList.splice(0, oldPostList.length - postList.length);
     oldPostList.forEach(pid => {
       targetDB.unset(pid).write();
     });
