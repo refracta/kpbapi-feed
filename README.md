@@ -17,10 +17,9 @@ const UPDATE_TIME = 1000 * 60 * 60 * 2;
 // 데이터 갱신 주기를 설정합니다.
 var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
-    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => ` $ {
+    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${
         kpbapi.BOARD_ID_MAP_REVERSE[id]
-    }
-    게시판 `).join(', ')}`,
+    }`).join(', ')}`,
     id: 'https://portal.koreatech.ac.kr/',
     link: 'https://portal.koreatech.ac.kr/',
     language: 'ko',
@@ -63,7 +62,7 @@ https://HEROKU_APP_NAME.herokuapp.com
 ### boardList
 피드에 포함할 게시판을 결정합니다. ','로 구분하여 여러 게시판을 동시에 포함시킬 수 있습니다. 값이 없는 경우 지원하는 모든 게시판을 포함시킵니다. 
 
-지원 게시판: 코로나19관련공지 게시판, 일반공지사항 게시판, 학사공지사항 게시판, 민원실 게시판, 시설보수신청 게시판, 학생생활 게시판, 자유게시판 게시판, 부정행위(시험)신고 게시판, 학사행정서식 게시판, 교육자료실 게시판, 일반자료실 게시판, 코리아텍 위키피디아 게시판
+지원 게시판: 코로나19관련공지, 일반공지사항, 학사공지사항, 민원실, 시설보수신청, 학생생활, 자유게시판, 부정행위(시험)신고, 학사행정서식, 교육자료실, 일반자료실, 코리아텍 위키피디아
 
 예시) https://koreatech-feed.koreatech?boardList=자유게시판,일반자료실
 ### deleteContent
