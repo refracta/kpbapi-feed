@@ -4,6 +4,7 @@ API를 이용한 게시판 Feed 서버의 구현 예제입니다.
 ## 설치 방법
 ```
 npm install
+npm run build
 ```
 
 ## 설정 방법 [(index.js)](https://github.com/refracta/kpbapi-feed/blob/master/index.js)
