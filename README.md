@@ -50,19 +50,12 @@ npm start ID PW
 ## 사용 방법 [(Heroku)](https://heroku.com)
 ```
 git clone https://github.com/refracta/kpbapi-feed
-
 cd kpbapi-feed
-
 git commit -m "koreatech-feed"
-
 heroku create HEROKU_APP_NAME
-
 heroku config:set KOREATECH_ID="ID"
-
 heroku config:set KOREATECH_PW="PW"
-
 git push heroku master
-
 https://HEROKU_APP_NAME.herokuapp.com
 ```
 
