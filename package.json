@@ -15,7 +15,8 @@
     "license": "ISC",
     "dependencies": {
         "express": "4.17.1",
-        "lowdb": "1.0.0"
+        "lowdb": "1.0.0",
+        "feed": "4.2.1"
     },
     "devDependencies": {},
     "description": ""
