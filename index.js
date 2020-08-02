@@ -26,7 +26,7 @@ Object.values(kpbapi.BOARD_ID_MAP).forEach(e => {
 });
 db.defaults(initDB).write();
 
-const UPDATE_TIME = 1000 * 60 * 5;
+const UPDATE_TIME = 1000 * 60 * 60 * 2;
 var cachedDB;
 var lastUpdated;
 
