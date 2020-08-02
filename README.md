@@ -62,12 +62,15 @@ https://HEROKU_APP_NAME.herokuapp.com
 ## GET 요청 매개변수
 ### boardList
 피드에 포함할 게시판을 결정합니다. ','로 구분하여 여러 게시판을 동시에 포함시킬 수 있습니다. 값이 없는 경우 지원하는 모든 게시판을 포함시킵니다. 지원 게시판: 코로나19관련공지 게시판, 일반공지사항 게시판, 학사공지사항 게시판, 민원실 게시판, 시설보수신청 게시판, 학생생활 게시판, 자유게시판 게시판, 부정행위(시험)신고 게시판, 학사행정서식 게시판, 교육자료실 게시판, 일반자료실 게시판, 코리아텍 위키피디아 게시판
+
 예시) https://koreatech-feed.koreatech?boardList=자유게시판,일반자료실
 ### deleteContent
 피드에 콘텐츠(HTML) 부분을 삭제하는지에 대한 여부를 결정합니다. true, false의 값을 가질 수 있습니다. 기본값은 false입니다.
+
 예시) https://koreatech-feed.koreatech?deleteContent=true
 ### feedType
 피드의 종류를 결정합니다. rss, atom, json의 값을 가질 수 있습니다. 각각 RSS2, ATOM1, JSON FEED V1의 포맷을 사용하며 기본값은 rss입니다. 
+
 예시) https://koreatech-feed.koreatech?feedType=atom
 
 ## 기타
