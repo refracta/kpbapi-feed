@@ -4,8 +4,8 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 const kpbapi = require('./koreatech-api/koreatech-portal-board');
 
 const argv = process.argv.slice(2);
-const ID = argv[0];
-const PW = argv[1];
+const ID = process.env.KOREATECH_ID || argv[0];
+const PW = process.env.KOREATECH_PW || argv[1];
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
