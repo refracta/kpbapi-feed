@@ -17,9 +17,8 @@ const UPDATE_TIME = 1000 * 60 * 60 * 1;
 // 데이터 갱신 주기를 설정합니다.
 var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
-    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${
-        kpbapi.BOARD_ID_MAP_REVERSE[id]
-    }`).join(', ')}`,
+    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]}`)
+    .filter(e => READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 1).join(', ')}`,
     id: 'https://portal.koreatech.ac.kr/',
     link: 'https://portal.koreatech.ac.kr/',
     language: 'ko',
