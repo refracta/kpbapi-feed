@@ -146,8 +146,15 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
 async function init() {
   console.log('Init Feed Server!');
   if (!(ID && PW)) {
-    delete kpbapi.BOARD_ID_MAP['민원실'];
-    delete kpbapi.BOARD_ID_MAP_REVERSE[72];
+    for(var k in kpbapi.BOARD_PRIVILEGE_MAP){
+      var p = kpbapi.BOARD_PRIVILEGE_MAP[k];
+      var v = kpbapi.BOARD_ID_MAP[k];
+      if(p > 0){
+        delete kpbapi.BOARD_ID_MAP[k];
+        delete kpbapi.BOARD_ID_MAP_REVERSE[v];
+      }
+    }
+
   }
   try {
     await update();
