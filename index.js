@@ -75,7 +75,10 @@ async function updatePostList() {
 
 async function update() {
   console.log('update');
-  await kpbapi.login(ID, PW);
+  if (!USE_HEROKU) {
+    console.log('login');
+    await kpbapi.login(ID, PW);
+  }
   console.log('updatePostList');
   await updatePostList();
   if (!USE_HEROKU) {
