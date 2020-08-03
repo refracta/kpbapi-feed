@@ -106,7 +106,7 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
   });
   var posts = boardIdList.reduce((a, id) => [...a, ...Object.values(cachedDB[id]).map(e => ((e.board_identifier = id, e)))], []);
 
-  posts = posts.sort((a, b) => new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? 1 : 0).slice(-numberOfPost);
+  posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0).slice(-numberOfPost).reverse();
 
   posts.forEach(p => {
     var title = `[${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}] ${p.info.title}`;
