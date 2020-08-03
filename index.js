@@ -32,6 +32,7 @@ Object.values(kpbapi.BOARD_ID_MAP).forEach(e => {
 });
 db.defaults(initDB).write();
 
+Date.timezoneOffset(-540);
 const UPDATE_TIME = 1000 * 60 * 60 * 1;
 var cachedDB;
 var lastUpdated;
