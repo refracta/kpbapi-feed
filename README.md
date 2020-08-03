@@ -48,7 +48,8 @@ npm start [LIGHT_MODE: true or false] [ID] [PW]
 예시3) npm start false ID PW
 예시4) npm start true ID PW
 ```
-LIGHT_MODE 상태에서는 글 내용을 포기하고 글 목록만 가져오기 때문에 일 단위로 게시글 게시 시각이 표시되며 게시글 콘텐츠(HTML) 부분을 피드에서 지원하지 않게됩니다.
+LIGHT_MODE 상태에서는 글 내용을 포기하고 글 목록만 가져오기 때문에 일 단위로 게시글 게시 시각이 표시되며 게시글 콘텐츠(HTML) 부분을 기본적으로 피드에서 지원하지 않게됩니다.
+
 ID와 PW없이 실행시 [게시판 권한](https://github.com/refracta/koreatech-api/blob/master/koreatech-portal-board/index.js#L23)에 따라 일부 게시판 정보를 지원하지 않게됩니다.
 
 ## 사용 방법 [(Heroku)](https://heroku.com)
