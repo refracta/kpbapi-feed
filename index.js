@@ -7,6 +7,8 @@ const argv = process.argv.slice(2);
 const ID = process.env.KOREATECH_ID || argv[0];
 const PW = process.env.KOREATECH_PW || argv[1];
 
+const HEROKU_MODE = process.env.HEROKU_MODE == 'true' ? true : false;
+
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('db.json');
@@ -76,11 +78,14 @@ async function update() {
   await kpbapi.login(ID, PW);
   console.log('updatePostList');
   await updatePostList();
-  console.log('updatePostInfo');
-  await updatePostInfo();
+  if (!HEROKU_MODE) {
+    console.log('updatePostInfo');
+    await updatePostInfo();
+  }
   cachedDB = db.value();
   lastUpdated = new Date();
 }
+
 
 function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteContent = false, numberOfPost = 20) {
   var feed = new Feed({
@@ -106,10 +111,15 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
   });
   var posts = boardIdList.reduce((a, id) => [...a, ...Object.values(cachedDB[id]).map(e => ((e.board_identifier = id, e)))], []);
 
-  posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0).slice(-numberOfPost);
+  if (HEROKU_MODE) {
+    posts = posts.sort((a, b) => new Date(a.cre_dt) < new Date(b.cre_dt) ? -1 : new Date(a.cre_dt) > new Date(b.cre_dt) ? 1 : 0);
+  } else {
+    posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0);
+  }
+  posts = posts.slice(-numberOfPost);
 
   posts.forEach(p => {
-    var title = `[${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}] ${p.info.title}`;
+    var title = `[${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}] ${p.title}`;
     var feedItem = {
       title,
       id: p.url,
@@ -120,7 +130,7 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
       }],
       date: new Date(p.info.cre_dt),
     };
-    if(!deleteContent){
+    if (!deleteContent && !HEROKU_MODE) {
       feedItem.content = p.info.content;
     }
     feed.addItem(feedItem);
