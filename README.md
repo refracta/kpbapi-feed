@@ -54,10 +54,12 @@ git commit -m "koreatech-feed"
 heroku create HEROKU_APP_NAME
 heroku config:set KOREATECH_ID="ID"
 heroku config:set KOREATECH_PW="PW"
+heroku config:set HEROKU_MODE="true"
 git push heroku master
 https://HEROKU_APP_NAME.herokuapp.com
 ```
 [Heroku Deploy Guide: Windows](https://github.com/refracta/kpbapi-feed/wiki/Heroku-Deploy-Guide:-Windows)
+HEROKU_MODE 상태에서는 글 내용을 포기하고 글 목록만 가져오기 때문에 일 단위로 게시글 게시 시각이 표시되며 게시글 콘텐츠(HTML) 부분을 피드에서 지원하지 않게됩니다. 
 
 ## GET 요청 매개변수
 ### boardList
