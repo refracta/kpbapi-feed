@@ -10,6 +10,9 @@ const ID = process.env.KOREATECH_ID || argv[1];
 const PW = process.env.KOREATECH_PW || argv[2];
 const READY_TO_LOGIN = ID && PW;
 
+const LIST_ACCESSIBLE_BOARD = Object.values(kpbapi.BOARD_ID_MAP).filter(e => READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 1);
+const POST_ACCESSIBLE_BOARD = Object.values(kpbapi.BOARD_ID_MAP).filter(e => READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 0);
+
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('db.json');
@@ -34,9 +37,7 @@ var cachedDB;
 var lastUpdated;
 
 async function updatePostInfo(forceUpdate = false) {
-  await Promise.all(Object.values(kpbapi.BOARD_ID_MAP).filter(e =>
-    READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 0
-  ).map(async e => {
+  await Promise.all(POST_ACCESSIBLE_BOARD.map(async e => {
     var targetDB = db.get(e);
     await Promise.all(Object.values(targetDB.value()).map(async p => {
       var isExistPostInfo = p.info;
@@ -52,9 +53,7 @@ async function updatePostInfo(forceUpdate = false) {
 }
 
 async function updatePostList() {
-  await Promise.all(Object.values(kpbapi.BOARD_ID_MAP).filter(e =>
-    READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 1
-  ).map(async e => {
+  await Promise.all(LIST_ACCESSIBLE_BOARD.map(async e => {
     var targetDB = db.get(e);
     var boardURL = kpbapi.getPortalBoardURL(e);
     console.log('getPostList:', kpbapi.BOARD_ID_MAP_REVERSE[e]);
@@ -95,7 +94,7 @@ async function update() {
 }
 
 
-function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteContent = false, numberOfPost = 50) {
+function generateFeed(boardIdList = LIST_ACCESSIBLE_BOARD, deleteContent = false, numberOfPost = 50) {
   var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
     description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]}`).join(', ')}`,
