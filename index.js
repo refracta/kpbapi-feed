@@ -7,7 +7,7 @@ const argv = process.argv.slice(2);
 const ID = process.env.KOREATECH_ID || argv[0];
 const PW = process.env.KOREATECH_PW || argv[1];
 
-const HEROKU_MODE = process.env.HEROKU_MODE == 'true' ? true : false;
+const USE_HEROKU = process.env.USE_HEROKU == 'true' ? true : false;
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -78,7 +78,7 @@ async function update() {
   await kpbapi.login(ID, PW);
   console.log('updatePostList');
   await updatePostList();
-  if (!HEROKU_MODE) {
+  if (!USE_HEROKU) {
     console.log('updatePostInfo');
     await updatePostInfo();
   }
@@ -111,7 +111,7 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
   });
   var posts = boardIdList.reduce((a, id) => [...a, ...Object.values(cachedDB[id]).map(e => ((e.board_identifier = id, e)))], []);
 
-  if (HEROKU_MODE) {
+  if (USE_HEROKU) {
     posts = posts.sort((a, b) => new Date(a.cre_dt) < new Date(b.cre_dt) ? -1 : new Date(a.cre_dt) > new Date(b.cre_dt) ? 1 : 0);
   } else {
     posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0);
@@ -128,9 +128,9 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
       author: [{
         name: p.cre_user_name
       }],
-      date: new Date(p.info.cre_dt),
+      date: new Date(USE_HEROKU ? p.cre_dt : p.info.cre_dt),
     };
-    if (!deleteContent && !HEROKU_MODE) {
+    if (!deleteContent && !USE_HEROKU) {
       feedItem.content = p.info.content;
     }
     feed.addItem(feedItem);
