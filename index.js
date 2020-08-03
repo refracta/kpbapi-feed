@@ -95,6 +95,7 @@ async function update() {
 
 
 function generateFeed(boardIdList = LIST_ACCESSIBLE_BOARD, deleteContent = false, numberOfPost = 50) {
+  var feedID = ID ? ID : 'koreatech';
   var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
     description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]}`).filter(e => READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 1).join(', ')}`,
@@ -105,14 +106,14 @@ function generateFeed(boardIdList = LIST_ACCESSIBLE_BOARD, deleteContent = false
     favicon: 'https://portal.koreatech.ac.kr/Portal.ico',
     copyright: 'Copyrightⓒ2016 KOREATECH. All rights reserved.',
     updated: lastUpdated,
-    generator: ID ? ID : 'koreatech',
+    generator: feedID,
     feedLinks: {
       //json: 'https://',
       //atom: 'https://'
     },
     author: {
-      name: ID ? ID : 'koreatech',
-      email: `${ID}@koreatech.ac.kr`,
+      name: feedID,
+      email: feedID ? `${ID}@koreatech.ac.kr` : void 0,
       // link: 'https://'
     }
   });
