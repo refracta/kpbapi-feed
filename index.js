@@ -4,11 +4,10 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 const kpbapi = require('./koreatech-api/koreatech-portal-board');
 
 const argv = process.argv.slice(2);
-const ID = process.env.KOREATECH_ID || argv[0];
-const PW = process.env.KOREATECH_PW || argv[1];
 
-const LIGHT_MODE = (process.env.LIGHT_MODE || argv[1]) == 'true' ? true : false;
-
+const LIGHT_MODE = (process.env.LIGHT_MODE || argv[0]) == 'true' ? true : false;
+const ID = process.env.KOREATECH_ID || argv[1];
+const PW = process.env.KOREATECH_PW || argv[2];
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -76,7 +75,7 @@ async function updatePostList() {
 
 async function update() {
   console.log('update');
-  if (!LIGHT_MODE) {
+  if (ID && PW) {
     console.log('login');
     await kpbapi.login(ID, PW);
   }
@@ -145,6 +144,10 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
 
 async function init() {
   console.log('Init Feed Server!');
+  if(!(ID && PW)){
+    delete kpbapi.BOARD_ID_MAP['민원실'];
+    delete kpbapi.BOARD_ID_MAP_REVERSE[72];
+  }
   try {
     await update();
   } catch (e) {
