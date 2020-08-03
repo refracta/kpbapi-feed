@@ -7,7 +7,8 @@ const argv = process.argv.slice(2);
 const ID = process.env.KOREATECH_ID || argv[0];
 const PW = process.env.KOREATECH_PW || argv[1];
 
-const USE_HEROKU = process.env.USE_HEROKU == 'true' ? true : false;
+const LIGHT_MODE = (process.env.LIGHT_MODE || argv[1]) == 'true' ? true : false;
+
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -75,13 +76,13 @@ async function updatePostList() {
 
 async function update() {
   console.log('update');
-  if (!USE_HEROKU) {
+  if (!LIGHT_MODE) {
     console.log('login');
     await kpbapi.login(ID, PW);
   }
   console.log('updatePostList');
   await updatePostList();
-  if (!USE_HEROKU) {
+  if (!LIGHT_MODE) {
     console.log('updatePostInfo');
     await updatePostInfo();
   }
@@ -101,20 +102,20 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
     favicon: 'https://portal.koreatech.ac.kr/Portal.ico',
     copyright: 'Copyrightⓒ2016 KOREATECH. All rights reserved.',
     updated: lastUpdated,
-    generator: ID,
+    generator: LIGHT_MODE ? 'koreatech' : ID,
     feedLinks: {
       //json: 'https://',
       //atom: 'https://'
     },
     author: {
-      name: ID,
+      name: LIGHT_MODE ? 'koreatech' : ID,
       email: `${ID}@koreatech.ac.kr`,
       // link: 'https://'
     }
   });
   var posts = boardIdList.reduce((a, id) => [...a, ...Object.values(cachedDB[id]).map(e => ((e.board_identifier = id, e)))], []);
 
-  if (USE_HEROKU) {
+  if (LIGHT_MODE) {
     posts = posts.sort((a, b) => new Date(a.cre_dt) < new Date(b.cre_dt) ? -1 : new Date(a.cre_dt) > new Date(b.cre_dt) ? 1 : 0);
   } else {
     posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0);
@@ -131,9 +132,9 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
       author: [{
         name: p.cre_user_name
       }],
-      date: new Date(USE_HEROKU ? p.cre_dt : p.info.cre_dt),
+      date: new Date(LIGHT_MODE ? p.cre_dt : p.info.cre_dt),
     };
-    if (!deleteContent && !USE_HEROKU) {
+    if (!deleteContent && !LIGHT_MODE) {
       feedItem.content = p.info.content;
     }
     feed.addItem(feedItem);
