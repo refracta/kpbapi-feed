@@ -59,8 +59,6 @@ https://HEROKU_APP_NAME.herokuapp.com
 ```
 [Heroku Deploy Guide: Windows](https://github.com/refracta/kpbapi-feed/wiki/Heroku-Deploy-Guide:-Windows)
 
-[Apply Pushbullet & IFTTT](https://github.com/refracta/kpbapi-feed/wiki/Apply-Pushbullet-&-IFTTT)
-
 ## GET 요청 매개변수
 ### boardList
 피드에 포함할 게시판을 결정합니다. ','로 구분하여 여러 게시판을 동시에 포함시킬 수 있습니다. 값이 없는 경우 지원하는 모든 게시판을 포함시킵니다. 
@@ -79,5 +77,7 @@ https://HEROKU_APP_NAME.herokuapp.com
 
 ## 기타
 [Pushbullet](https://www.pushbullet.com)과 [IFTTT - Send a Pushbullet notification when there's a new RSS feed item](https://ifttt.com/applets/Z6dvekxC-send-a-pushbullet-notification-when-there-s-a-new-rss-feed-item)를 이용하면 다양한 기기에서 푸시 알림을 받을 수 있습니다.
+
+[Apply Pushbullet & IFTTT](https://github.com/refracta/kpbapi-feed/wiki/Apply-Pushbullet-&-IFTTT)
 
 Pull Request 환영합니다. 개선 사항, 버그는 Issue에 등록해주세요.
