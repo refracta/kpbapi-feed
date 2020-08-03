@@ -116,7 +116,7 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
   } else {
     posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0);
   }
-  posts = posts.slice(-numberOfPost);
+  posts = posts.slice(-numberOfPost).reverse();
 
   posts.forEach(p => {
     var title = `[${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}] ${p.title}`;

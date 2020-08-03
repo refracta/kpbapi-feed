@@ -57,6 +57,7 @@ heroku config:set KOREATECH_PW="PW"
 git push heroku master
 https://HEROKU_APP_NAME.herokuapp.com
 ```
+[Heroku Deploy Guide: Windows](https://github.com/refracta/kpbapi-feed/wiki/Heroku-Deploy-Guide:-Windows)
 
 ## GET 요청 매개변수
 ### boardList
@@ -76,5 +77,7 @@ https://HEROKU_APP_NAME.herokuapp.com
 
 ## 기타
 [Pushbullet](https://www.pushbullet.com)과 [IFTTT - Send a Pushbullet notification when there's a new RSS feed item](https://ifttt.com/applets/Z6dvekxC-send-a-pushbullet-notification-when-there-s-a-new-rss-feed-item)를 이용하면 다양한 기기에서 푸시 알림을 받을 수 있습니다.
+
+[Apply Pushbullet & IFTTT](https://github.com/refracta/kpbapi-feed/wiki/Apply-Pushbullet-&-IFTTT)
 
 Pull Request 환영합니다. 개선 사항, 버그는 Issue에 등록해주세요.
