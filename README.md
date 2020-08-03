@@ -13,7 +13,7 @@ npm run build
 ```
 const port = process.env.PORT || 6060;
 // 포트를 설정하는 부분입니다.
-const UPDATE_TIME = 1000 * 60 * 60 * 2;
+const UPDATE_TIME = 1000 * 60 * 60 * 1;
 // 데이터 갱신 주기를 설정합니다.
 var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
