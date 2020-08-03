@@ -28,7 +28,7 @@ Object.values(kpbapi.BOARD_ID_MAP).forEach(e => {
 });
 db.defaults(initDB).write();
 
-const UPDATE_TIME = 1000 * 60 * 60 * 2;
+const UPDATE_TIME = 1000 * 60 * 60 * 1;
 var cachedDB;
 var lastUpdated;
 
@@ -140,10 +140,17 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
 }
 
 async function init() {
-  console.log('init Feed Server!');
-  await update();
+  console.log('Init Feed Server!');
+  try {
+    await update();
+  } catch (e) {
+    console.log('Init Failed...');
+    process.exit(1);
+  }
   setInterval(_ => {
-    update();
+    update().catch(e => {
+      console.log('Update Failed...');
+    });
   }, UPDATE_TIME);
 
   app.get('/', function(req, res, next) {
