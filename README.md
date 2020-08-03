@@ -17,9 +17,8 @@ const UPDATE_TIME = 1000 * 60 * 60 * 1;
 // 데이터 갱신 주기를 설정합니다.
 var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
-    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${
-        kpbapi.BOARD_ID_MAP_REVERSE[id]
-    }`).join(', ')}`,
+    description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]}`)
+    .filter(e => READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 1).join(', ')}`,
     id: 'https://portal.koreatech.ac.kr/',
     link: 'https://portal.koreatech.ac.kr/',
     language: 'ko',
@@ -43,8 +42,15 @@ var feed = new Feed({
 
 ## 사용 방법 (개인 서버)
 ```
-npm start ID PW
+npm start [LIGHT_MODE: true or false] [ID] [PW]
+예시1) npm start // LIGHT_MODE DEFAULT: false
+예시2) npm start true
+예시3) npm start false ID PW
+예시4) npm start true ID PW
 ```
+LIGHT_MODE 상태에서는 글 내용을 포기하고 글 목록만 가져오기 때문에 일 단위로 게시글 게시 시각이 표시되며 게시글 콘텐츠(HTML) 부분을 기본적으로 피드에서 지원하지 않게됩니다.
+
+ID와 PW없이 실행시 [게시판 권한](https://github.com/refracta/koreatech-api/blob/master/koreatech-portal-board/index.js#L23)에 따라 일부 게시판 정보를 지원하지 않게됩니다.
 
 ## 사용 방법 [(Heroku)](https://heroku.com)
 ```
@@ -52,15 +58,15 @@ git clone https://github.com/refracta/kpbapi-feed
 cd kpbapi-feed
 git commit -m "koreatech-feed"
 heroku create HEROKU_APP_NAME
-heroku config:set KOREATECH_ID="ID"
-heroku config:set KOREATECH_PW="PW"
+heroku config:set KOREATECH_ID="ID" // 생략 가능
+heroku config:set KOREATECH_PW="PW" // 생략 가능
 heroku config:set LIGHT_MODE="true"
+heroku config:set TZ="Asia/Seoul"
 git push heroku master
 https://HEROKU_APP_NAME.herokuapp.com
 ```
 [Heroku Deploy Guide: Windows](https://github.com/refracta/kpbapi-feed/wiki/Heroku-Deploy-Guide:-Windows)
 
-USE_HEROKU 상태에서는 글 내용을 포기하고 글 목록만 가져오기 때문에 일 단위로 게시글 게시 시각이 표시되며 게시글 콘텐츠(HTML) 부분을 피드에서 지원하지 않게됩니다.
 
 ## GET 요청 매개변수
 ### boardList
