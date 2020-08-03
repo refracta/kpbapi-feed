@@ -52,7 +52,12 @@ git clone https://github.com/refracta/kpbapi-feed
 cd kpbapi-feed
 git commit -m "koreatech-feed"
 heroku create HEROKU_APP_NAME
-heroku config:set USE_HEROKU="true"
+// HEROKU_APP_NAME에 본인이 원하는 Heroku 앱 이름을 사용합니다.
+heroku config:set KOREATECH_ID="ID"
+// ID 부분에 아우누리 포털 아이디를 입력합니다.
+heroku config:set KOREATECH_PW="PW"
+// PW 부분에 아우누리 포털 비밀번호를 입력합니다.
+heroku config:set LIGHT_MODE="true"
 git push heroku master
 https://HEROKU_APP_NAME.herokuapp.com
 ```
