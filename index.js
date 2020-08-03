@@ -122,7 +122,7 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
   posts = posts.slice(-numberOfPost).reverse();
 
   posts.forEach(p => {
-    var etc = [p.prefix ? `${p.prefix}` : '', p.etc0 ? `${p.etc0}` : '', p.etc1 ? `${p.etc1}` : '', p.etc2 ? `${p.etc2}` : ''].join('-').trim();
+    var etc = [p.prefix ? `${p.prefix}` : void 0, p.etc0 ? `${p.etc0}` : void 0, p.etc1 ? `${p.etc1}` : void 0, p.etc2 ? `${p.etc2}` : void 0].filter(e => e).join('-').trim();
     var title = `<${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}>${etc ? ` [${etc}]` : ''} ${p.title}`;
     var feedItem = {
       title,
