@@ -58,6 +58,7 @@ git push heroku master
 https://HEROKU_APP_NAME.herokuapp.com
 ```
 [Install Guide: Windows](https://github.com/refracta/kpbapi-feed/wiki/Install-Guide:-Windows)
+
 [Apply Pushbullet & IFTTT](https://github.com/refracta/kpbapi-feed/wiki/Apply-Pushbullet-&-IFTTT)
 
 ## GET 요청 매개변수
