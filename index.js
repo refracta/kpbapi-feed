@@ -8,6 +8,7 @@ const argv = process.argv.slice(2);
 const LIGHT_MODE = (process.env.LIGHT_MODE || argv[0]) == 'true' ? true : false;
 const ID = process.env.KOREATECH_ID || argv[1];
 const PW = process.env.KOREATECH_PW || argv[2];
+const READY_TO_LOGIN = ID && PW;
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -33,7 +34,9 @@ var cachedDB;
 var lastUpdated;
 
 async function updatePostInfo(forceUpdate = false) {
-  await Promise.all(Object.values(kpbapi.BOARD_ID_MAP).map(async e => {
+  await Promise.all(Object.values(kpbapi.BOARD_ID_MAP).filter(e =>
+    READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 0
+  ).map(async e => {
     var targetDB = db.get(e);
     await Promise.all(Object.values(targetDB.value()).map(async p => {
       var isExistPostInfo = p.info;
@@ -49,7 +52,9 @@ async function updatePostInfo(forceUpdate = false) {
 }
 
 async function updatePostList() {
-  await Promise.all(Object.values(kpbapi.BOARD_ID_MAP).map(async e => {
+  await Promise.all(Object.values(kpbapi.BOARD_ID_MAP).filter(e =>
+    READY_TO_LOGIN ? true : kpbapi.BOARD_PRIVILEGE_MAP_REVERSE[e] <= 1
+  ).map(async e => {
     var targetDB = db.get(e);
     var boardURL = kpbapi.getPortalBoardURL(e);
     console.log('getPostList:', kpbapi.BOARD_ID_MAP_REVERSE[e]);
@@ -75,7 +80,7 @@ async function updatePostList() {
 
 async function update() {
   console.log('update');
-  if (ID && PW) {
+  if (READY_TO_LOGIN) {
     console.log('login');
     await kpbapi.login(ID, PW);
   }
@@ -90,7 +95,7 @@ async function update() {
 }
 
 
-function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteContent = false, numberOfPost = 40) {
+function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteContent = false, numberOfPost = 50) {
   var feed = new Feed({
     title: '한국기술교육대학교 아우누리 포털',
     description: `한국기술교육대학교 아우누리 포털의 게시글의 피드입니다. 포함 게시판: ${boardIdList.map(id => `${kpbapi.BOARD_ID_MAP_REVERSE[id]}`).join(', ')}`,
@@ -101,24 +106,26 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
     favicon: 'https://portal.koreatech.ac.kr/Portal.ico',
     copyright: 'Copyrightⓒ2016 KOREATECH. All rights reserved.',
     updated: lastUpdated,
-    generator: LIGHT_MODE ? 'koreatech' : ID,
+    generator: ID ? ID : 'koreatech',
     feedLinks: {
       //json: 'https://',
       //atom: 'https://'
     },
     author: {
-      name: LIGHT_MODE ? 'koreatech' : ID,
+      name: ID ? ID : 'koreatech',
       email: `${ID}@koreatech.ac.kr`,
       // link: 'https://'
     }
   });
   var posts = boardIdList.reduce((a, id) => [...a, ...Object.values(cachedDB[id]).map(e => ((e.board_identifier = id, e)))], []);
 
-  if (LIGHT_MODE) {
-    posts = posts.sort((a, b) => new Date(a.cre_dt) < new Date(b.cre_dt) ? -1 : new Date(a.cre_dt) > new Date(b.cre_dt) ? 1 : 0);
-  } else {
-    posts = posts.sort((a, b) => new Date(a.info.cre_dt) < new Date(b.info.cre_dt) ? -1 : new Date(a.info.cre_dt) > new Date(b.info.cre_dt) ? 1 : 0);
-  }
+
+  posts = posts.sort((a, b) => {
+    var a_cre_dt = a.info ? a.info.cre_dt : a.cre_dt;
+    var b_cre_dt = b.info ? b.info.cre_dt : b.cre_dt;
+    return new Date(a_cre_dt) < new Date(b_cre_dt) ? -1 : new Date(a_cre_dt) > new Date(b_cre_dt) ? 1 : 0;
+  });
+
   posts = posts.slice(-numberOfPost).reverse();
 
   posts.forEach(p => {
@@ -132,9 +139,9 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
       author: [{
         name: p.cre_user_name
       }],
-      date: new Date(LIGHT_MODE ? p.cre_dt : p.info.cre_dt),
+      date: new Date(p.info ? p.info.cre_dt : p.cre_dt),
     };
-    if (!deleteContent && !LIGHT_MODE) {
+    if (!deleteContent && p.info) {
       feedItem.content = p.info.content;
     }
     feed.addItem(feedItem);
@@ -145,17 +152,6 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
 
 async function init() {
   console.log('Init Feed Server!');
-  if (!(ID && PW)) {
-    for(var k in kpbapi.BOARD_PRIVILEGE_MAP){
-      var p = kpbapi.BOARD_PRIVILEGE_MAP[k];
-      var v = kpbapi.BOARD_ID_MAP[k];
-      if(p > 0){
-        delete kpbapi.BOARD_ID_MAP[k];
-        delete kpbapi.BOARD_ID_MAP_REVERSE[v];
-      }
-    }
-
-  }
   try {
     await update();
   } catch (e) {
