@@ -122,7 +122,8 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
   posts = posts.slice(-numberOfPost).reverse();
 
   posts.forEach(p => {
-    var title = `[${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}] ${p.title}`;
+    var etc = [p.prefix ? `${p.prefix}` : '', p.etc0 ? `${p.etc0}` : '', p.etc1 ? `${p.etc1}` : '', p.etc2 ? `${p.etc2}` : ''].join('-').trim();
+    var title = `<${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}>${etc ? ` [${etc}]` : ''} ${p.title}`;
     var feedItem = {
       title,
       id: p.url,
@@ -144,7 +145,7 @@ function generateFeed(boardIdList = Object.values(kpbapi.BOARD_ID_MAP), deleteCo
 
 async function init() {
   console.log('Init Feed Server!');
-  if(!(ID && PW)){
+  if (!(ID && PW)) {
     delete kpbapi.BOARD_ID_MAP['민원실'];
     delete kpbapi.BOARD_ID_MAP_REVERSE[72];
   }
