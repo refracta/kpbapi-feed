@@ -58,8 +58,6 @@ git clone https://github.com/refracta/kpbapi-feed
 cd kpbapi-feed
 git commit -m "koreatech-feed"
 heroku create HEROKU_APP_NAME
-heroku config:set KOREATECH_ID="ID" // 생략 가능
-heroku config:set KOREATECH_PW="PW" // 생략 가능
 heroku config:set LIGHT_MODE="true"
 git push heroku master
 https://HEROKU_APP_NAME.herokuapp.com
