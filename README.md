@@ -86,7 +86,7 @@ https://HEROKU_APP_NAME.herokuapp.com
 ## 기타
 [Pushbullet](https://www.pushbullet.com)과 [IFTTT - Send a Pushbullet notification when there's a new RSS feed item](https://ifttt.com/applets/Z6dvekxC-send-a-pushbullet-notification-when-there-s-a-new-rss-feed-item)를 이용하면 다양한 기기에서 푸시 알림을 받을 수 있습니다.
 
-*[Commafeed](https://www.commafeed.com)의 피드 캐싱을 이용해야 원활한 사용이 가능합니다. (아래 위키 항목 참조)
+* [Commafeed](https://www.commafeed.com)의 피드 캐싱을 이용해야 원활한 사용이 가능합니다. (아래 위키 항목 참조)
 
 [Apply Pushbullet & IFTTT](https://github.com/refracta/kpbapi-feed/wiki/Apply-Pushbullet-&-IFTTT)
 
