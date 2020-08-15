@@ -131,6 +131,10 @@ function generateFeed(boardIdList = LIST_ACCESSIBLE_BOARD, deleteContent = false
   posts.forEach(p => {
     var etc = [p.prefix ? `${p.prefix}` : void 0, p.etc0 ? `${p.etc0}` : void 0, p.etc1 ? `${p.etc1}` : void 0, p.etc2 ? `${p.etc2}` : void 0].filter(e => e).join('-').trim();
     var title = `[${kpbapi.BOARD_ID_MAP_REVERSE[p.board_identifier]}]${etc ? ` (${etc})` : ''} ${p.title}`;
+	var date = new Date(p.info ? p.info.cre_dt : p.cre_dt);
+	if(isNaN(date.getTime())){
+		return;
+	}
     var feedItem = {
       title,
       id: p.url,
@@ -139,7 +143,7 @@ function generateFeed(boardIdList = LIST_ACCESSIBLE_BOARD, deleteContent = false
       author: [{
         name: p.cre_user_name
       }],
-      date: new Date(p.info ? p.info.cre_dt : p.cre_dt),
+      date,
     };
     if (!deleteContent && p.info) {
       feedItem.content = p.info.content;
