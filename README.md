@@ -1,7 +1,6 @@
 # kpbapi-feed
 [koreatech-api](https://github.com/refracta/koreatech-api/tree/master/koreatech-portal-board)를 이용한 아우누리 포털 게시판 피드 서버의 구현입니다.
-한국기술대학교 전산정보팀 측과의 통화 결과 이유 불문하고 공개 피드 주소 배포의 지양 및 개인 사용만을 종용했으므로 개인 사용을 권고합니다.
-따라서 공개 피드 주소를 직접 제공하지 않습니다. 개인 서버 또는 Heroku를 이용한 사용 방법을 추천합니다.
+개인 서버 또는 Heroku를 이용하여 사용할 수 있습니다.
 
 ## 설치 방법
 ```
