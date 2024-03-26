@@ -14,7 +14,7 @@
     "author": "refracta",
     "license": "ISC",
     "dependencies": {
-        "express": "4.17.1",
+        "express": "4.19.2",
         "lowdb": "1.0.0",
         "feed": "4.2.1"
     },
